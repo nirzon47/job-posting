@@ -1,6 +1,7 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import morgan from 'morgan'
+import cors from 'cors'
 
 import jobRoutes from './routes/jobs'
 
@@ -21,6 +22,9 @@ mongoose
 
 // Middleware for parsing JSON request bodies
 app.use(express.json())
+
+// Middleware for handling CORS
+app.use(cors())
 
 // Middleware for logging requests
 app.use(morgan(':method | Endpoint - :url | :date[web] | :response-time ms'))
