@@ -2,7 +2,7 @@ import { JobType } from '@/lib/types'
 
 const Card = ({ job }: { job: JobType }) => {
 	return (
-		<div className='flex flex-col justify-between h-64 p-4 py-4 rounded-lg shadow-md ring-1 ring-teal-200 '>
+		<div className='flex flex-col justify-between h-64 p-4 py-4 duration-150 rounded-lg shadow-md ring-1 ring-teal-200 hover:shadow-lg'>
 			<h3 className='font-medium text-zinc-600'>{job.company}</h3>
 			<h2 className='text-2xl font-medium text-teal-700'>{job.title}</h2>
 			<p className='text-sm text-zinc-700'>{job.description}</p>
