@@ -4,6 +4,7 @@ import { useState } from 'react'
 
 const Sidebar = () => {
 	const [dialogOpenState, setDialogOpenState] = useState<boolean>(false)
+
 	return (
 		<div className='flex flex-col items-center col-span-1'>
 			<Dialog open={dialogOpenState} onOpenChange={setDialogOpenState}>
@@ -15,6 +16,7 @@ const Sidebar = () => {
 				<FormDialog
 					formType='add'
 					setDialogOpenState={setDialogOpenState}
+					job={null}
 				/>
 			</Dialog>
 		</div>

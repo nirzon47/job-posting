@@ -11,13 +11,16 @@ import { useContext, useState } from 'react'
 import axios from 'axios'
 import { JobContext } from '@/context/Context'
 import { toast } from 'react-toastify'
+import { JobType } from '@/lib/types'
 
 const FormDialog = ({
 	formType,
 	setDialogOpenState,
+	job,
 }: {
 	formType: string
 	setDialogOpenState: React.Dispatch<React.SetStateAction<boolean>>
+	job: JobType | null
 }) => {
 	// Dynamic form title and button title
 	let title
@@ -50,11 +53,62 @@ const FormDialog = ({
 	}
 
 	// Function to handle form submission depending on formType
-	const handleSubmit = () => {
-		if (formType === 'add') {
-			addJob()
-		} else if (formType === 'edit') {
-			// Edit Job
+	const handleSubmit = async () => {
+		setLoading(true)
+
+		try {
+			// If form is not valid, return
+			if (!checkForm()) {
+				toast.error('Please fill in all fields')
+				return
+			}
+
+			if (formType === 'edit') {
+				await axios.patch(
+					`https://job-posting-v1al.onrender.com/api/v1/jobs/${job?._id}`,
+					{
+						title: titleValue,
+						description: desc,
+						company: company,
+						contact: contact,
+						location: location,
+						salary: salary,
+					}
+				)
+			} else if (formType === 'add') {
+				await axios.post(
+					'https://job-posting-v1al.onrender.com/api/v1/jobs/',
+					{
+						title: titleValue,
+						description: desc,
+						company: company,
+						contact: contact,
+						location: location,
+						salary: salary,
+					}
+				)
+			}
+
+			// Reset form fields
+			setTitleValue('')
+			setDesc('')
+			setCompany('')
+			setContact('')
+			setLocation('')
+			setSalary('')
+
+			toast.success(
+				`Job ${formType === 'add' ? 'Added' : 'Edited'} successfully`
+			)
+			setDialogOpenState(false) // Close dialog
+
+			getJobs() // Get updated jobs
+		} catch (error) {
+			toast.error(
+				`Job could not be ${formType === 'add' ? 'Added' : 'Edited'}`
+			)
+		} finally {
+			setLoading(false)
 		}
 	}
 
@@ -74,47 +128,6 @@ const FormDialog = ({
 			return false
 		} else {
 			return true
-		}
-	}
-
-	// Function to add job
-	const addJob = async () => {
-		setLoading(true)
-		try {
-			// If form is not valid, return
-			if (!checkForm()) {
-				toast.error('Please fill in all fields')
-				return
-			}
-
-			await axios.post(
-				'https://job-posting-v1al.onrender.com/api/v1/jobs/',
-				{
-					title: titleValue,
-					description: desc,
-					company: company,
-					contact: contact,
-					location: location,
-					salary: salary,
-				}
-			)
-
-			// Reset form fields
-			setTitleValue('')
-			setDesc('')
-			setCompany('')
-			setContact('')
-			setLocation('')
-			setSalary('')
-
-			toast.success('Job added successfully')
-			setDialogOpenState(false) // Close dialog
-
-			getJobs() // Get updated jobs
-		} catch (error) {
-			toast.error('Failed to add job')
-		} finally {
-			setLoading(false)
 		}
 	}
 
