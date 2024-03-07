@@ -7,7 +7,9 @@ const Card = ({ job }: { job: JobType }) => {
 			<h2 className='text-2xl font-medium text-teal-700'>{job.title}</h2>
 			<p className='text-sm text-zinc-700'>{job.description}</p>
 			<p className='text-zinc-700'>{job.location}</p>
-			<p className='text-xl font-medium text-teal-600'>${job.salary}</p>
+			<div>
+				<p className='text-xl font-medium text-teal-600'>${job.salary}</p>
+			</div>
 		</div>
 	)
 }

@@ -10,6 +10,7 @@ import { Button } from './ui/button'
 import { useContext, useState } from 'react'
 import axios from 'axios'
 import { JobContext } from '@/context/Context'
+import { toast } from 'react-toastify'
 
 const FormDialog = ({
 	formType,
@@ -18,9 +19,11 @@ const FormDialog = ({
 	formType: string
 	setDialogOpenState: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
+	// Dynamic form title and button title
 	let title
 	let buttonTitle
 
+	// States for form fields
 	const [titleValue, setTitleValue] = useState('')
 	const [desc, setDesc] = useState('')
 	const [company, setCompany] = useState('')
@@ -28,10 +31,13 @@ const FormDialog = ({
 	const [location, setLocation] = useState('')
 	const [salary, setSalary] = useState('')
 
+	// Loading state
 	const [loading, setLoading] = useState(false)
 
+	// Getting getJobs() from JobContext
 	const { getJobs } = useContext(JobContext)
 
+	// Switch statement to set title and button title
 	switch (formType) {
 		case 'add':
 			title = 'Add Job'
@@ -43,6 +49,7 @@ const FormDialog = ({
 			break
 	}
 
+	// Function to handle form submission depending on formType
 	const handleSubmit = () => {
 		if (formType === 'add') {
 			addJob()
@@ -51,9 +58,35 @@ const FormDialog = ({
 		}
 	}
 
+	// Function to check if form is valid
+	const checkForm = () => {
+		if (titleValue === '') {
+			return false
+		} else if (desc === '') {
+			return false
+		} else if (company === '') {
+			return false
+		} else if (contact === '') {
+			return false
+		} else if (location === '') {
+			return false
+		} else if (salary === '') {
+			return false
+		} else {
+			return true
+		}
+	}
+
+	// Function to add job
 	const addJob = async () => {
 		setLoading(true)
 		try {
+			// If form is not valid, return
+			if (!checkForm()) {
+				toast.error('Please fill in all fields')
+				return
+			}
+
 			await axios.post(
 				'https://job-posting-v1al.onrender.com/api/v1/jobs/',
 				{
@@ -66,18 +99,22 @@ const FormDialog = ({
 				}
 			)
 
+			// Reset form fields
 			setTitleValue('')
 			setDesc('')
 			setCompany('')
 			setContact('')
 			setLocation('')
 			setSalary('')
-			getJobs()
+
+			toast.success('Job added successfully')
+			setDialogOpenState(false) // Close dialog
+
+			getJobs() // Get updated jobs
 		} catch (error) {
-			console.log(error)
+			toast.error('Failed to add job')
 		} finally {
 			setLoading(false)
-			setDialogOpenState(false)
 		}
 	}
 

@@ -1,6 +1,8 @@
 import Main from './components/Main'
 import Sidebar from './components/Sidebar'
 import { JobProvider } from './context/Context'
+import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer } from 'react-toastify'
 
 const App = () => {
 	return (
@@ -14,6 +16,7 @@ const App = () => {
 					<Main />
 				</div>
 			</div>
+			<ToastContainer />
 		</JobProvider>
 	)
 }
