@@ -32,6 +32,17 @@ app.use(morgan(':method | Endpoint - :url | :date[web] | :response-time ms'))
 // Routes
 app.use('/api/v1/jobs', jobRoutes)
 
+// Invalid route handler
+app.use((req: any, res: any) => {
+	res.status(404).json({ status: 'error', message: 'Invalid route' })
+})
+
+// Error handling middleware
+app.use((err: any, req: any, res: any, next: any) => {
+	console.log(err)
+	res.status(500).json({ status: 'error', message: err.message })
+})
+
 app.listen(PORT, () => {
 	console.log(`Listening on port ${PORT}`)
 })
