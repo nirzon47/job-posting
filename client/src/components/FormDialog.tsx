@@ -27,12 +27,20 @@ const FormDialog = ({
 	let buttonTitle
 
 	// States for form fields
-	const [titleValue, setTitleValue] = useState('')
-	const [desc, setDesc] = useState('')
-	const [company, setCompany] = useState('')
-	const [contact, setContact] = useState('')
-	const [location, setLocation] = useState('')
-	const [salary, setSalary] = useState('')
+	const [titleValue, setTitleValue] = useState(
+		formType === 'add' ? '' : job?.title
+	)
+	const [desc, setDesc] = useState(formType === 'add' ? '' : job?.description)
+	const [company, setCompany] = useState(
+		formType === 'add' ? '' : job?.company
+	)
+	const [contact, setContact] = useState(
+		formType === 'add' ? '' : job?.contact
+	)
+	const [location, setLocation] = useState(
+		formType === 'add' ? '' : job?.location
+	)
+	const [salary, setSalary] = useState(formType === 'add' ? '' : job?.salary)
 
 	// Loading state
 	const [loading, setLoading] = useState(false)
