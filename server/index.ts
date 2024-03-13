@@ -6,7 +6,7 @@ import cors from 'cors'
 import jobRoutes from './routes/jobs'
 
 const PORT = process.env.PORT || 5000
-const MONGO_URI = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`
+const MONGO_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}`
 
 const app = express()
 
