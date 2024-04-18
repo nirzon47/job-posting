@@ -11,7 +11,7 @@ const App = () => {
 				<h1 className='mt-4 mb-8 text-3xl font-light text-center text-teal-800'>
 					Job Posting App
 				</h1>
-				<div className='grid grid-cols-6'>
+				<div className='grid md:grid-cols-6'>
 					<Sidebar />
 					<Main />
 				</div>
